@@ -1,0 +1,40 @@
+#+TITLE: *Stan* demo: Walk-on-sphere solution of Laplace equation
+#+OPTIONS: toc nil
+#+LATEX_CLASS: amsart
+#+LATEX_CLASS_OPTIONS: [11pt, reqno]
+
+* Background
+This =Stan= demo is a translation of one of my previosu R
+projects, implementing the Walk-on-sphere(WOS) method to solve
+the Laplace equation on a rectangle. This is the so-called
+probabilistic mesh-free method for PDE solution. Essentially
+the probabilistic interpretations of Laplace equation says
+the solution is the mean of exit-points' function values of
+Brownian motion. Instead of sampling the path of the
+Brownian motion, we only need to sample the exit-points of
+the Brownian motion that beginning at the location where we
+wish to find PDE solution. This is a simplified version of
+*Feyman-Kac formula*, which connects parabolic PDE with
+Brownian motion. Since there is no inference, we run
+=Stan= with =num_samples=1= and =algorithm=fixed_param=.
+
+
+Specifically, we solve 
+
+\begin{align*}
+        \nabla^2 u(x ,y) = 0, & \quad \forall (x, y)\in \Omega= [0, 1] \times [0, 1],\\
+        u = 0        ,& \quad \forall x=0,\\
+        u = 0        ,& \quad \forall x=1,\\
+        u = 0        ,& \quad \forall y=0,\\
+        u = 75x      ,& \quad \forall y=1, x\in [0, 2/3],\\
+        u = 150(1-x) ,& \quad \forall y=1, x\in [2/3, 1],
+\end{align*}
+
+* Model source code 
+#+include: "./harmonic.stan" src stan
+
+* Results
+With the data file input
+#+include: "./harmonic.data.R" src R
+the following plot shows the solution surface.
+[[file:harmonic.png]]
