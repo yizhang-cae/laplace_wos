@@ -1,5 +1,4 @@
 - [Background](#org54289ec)
-- [Model source code](#org9a8fd5f)
 - [Results](#org5dd4804)
 
 
